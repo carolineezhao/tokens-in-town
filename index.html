@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+      <title>Tokens in Town Dapp</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+          body {font-family: Arial; 
+            background: url('tokens-in-town-bg.png') no-repeat top center;
+            background-size: cover;
+        }
+          .tab {
+              overflow: hidden;
+              border: 1px solid #ccc;
+              background-color: #f1f1f1;
+          }
+          .tab button {
+              background-color: inherit;
+              float: left;
+              border: none;
+              outline: none;
+              cursor: pointer;
+              padding: 14px 24px;
+              transition: 0.3s;
+              font-size: 20px;
+          }
+          .tab button:hover {
+              background-color: #ddd;
+          }
+          .tab button.active {
+              background-color: #ccc;
+          }
+          .tabcontent {
+              display: none;
+              padding: 6px 12px;
+              border: 1px solid #ccc;
+              border-top: none;
+          }
+          .row:after {
+              content: "";
+              display: table;
+              clear: both;
+          }* {
+              box-sizing: border-box;
+          }
+          .column {
+              float: left;
+              width: 30%;
+              padding: 0 10px;
+          }
+          .row {margin: 0 -5px;}
+          .row:after {
+              content: "";
+              display: table;
+              clear: both;
+          }
+          @media screen and (max-width: 600px) {
+              .column {
+                  width: 100%;
+                  display: block;
+                  margin-bottom: 20px;
+              }
+          }
+          .card {
+              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+              padding: 16px;
+              text-align: center;
+              background-color: #f1f1f1;
+          }
+          .passport {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* 5 checks per row */
+      gap: 16px;
+      justify-items: center;
+      margin: 20px auto;
+      max-width: 300px;
+    }
+
+    .stamp {
+      font-size: 36px;
+      opacity: 0.3; /* default: unfilled */
+      transition: opacity 0.3s;
+    }
+
+    .stamp.filled {
+      opacity: 1; /* filled: full visibility */
+    }
+          
+          </style>
+  <body>
+    <script src="index.js"></script>
+
+    <h1>Tokens in Town dApp</h1>
+      <!-- Tab links -->
+    <div class="tab">
+      <button class="tablinks" onclick="openPage(event, 'Cashier')">Cashier</button>
+      <button class="tablinks" onclick="openPage(event, 'Passport')">Passport</button>
+      <button class="tablinks" onclick="openPage(event, 'Swap')">Swap</button>
+      <!-- <button class="tablinks" onclick="openPage(event, 'Admin')">Admin</button> -->
+      <button class="tablinks" onclick="openPage(event, 'Vote')">Vote</button>
+    </div>
+
+    <div id="Cashier" class="tabcontent">
+      <!-- Mint and Burn Inputs -->
+      <div>
+        <h2>Purchase / Redeem Coffee Tokens </h2>
+        <div>
+            <label for="targetAddressCoffeeCashier">Customer Address:</label>
+            <input type="text" id="targetAddressCoffeeCashier" placeholder="Paste customer address">
+        </div>
+        <div>
+            <button onclick="App.purchaseCoffee()">Purchase Tiger Coffee</button>
+        </div>
+        <div>
+            <button onclick="App.redeemCoffee()">Redeem Free Coffee</button>
+        </div>
+        <div>
+            <button onclick="App.updateCoffeeBalance()">Update Customer Balance</button>
+        </div>
+        <div id="custBalanceCoffee">Customer Balance (Coffee): <span class="custBalanceCoffee"></span></div>
+
+        <h2>Purchase / Redeem Sandwich Tokens </h2>
+        <div>
+            <label for="targetAddressSandwichCashier">Customer Address:</label>
+            <input type="text" id="targetAddressSandwichCashier" placeholder="Paste customer address">
+        </div>
+        <div>
+            <button onclick="App.purchaseSandwich()">Purchase Tiger Sandwich</button>
+        </div>
+        <div>
+            <button onclick="App.redeemSandwich()">Redeem Free Sandwich</button>
+        </div>
+        <div>
+            <button onclick="App.updateSandwichBalance()">Update Customer Balance</button>
+        </div>
+        <div id="custBalanceSandwich">Customer Balance (Sandwich): <span class="custBalanceSandwich"></span></div>
+
+        <h2>Purchase / Redeem Ticket Tokens </h2>
+        <div>
+            <label for="targetAddressTicketCashier">Customer Address:</label>
+            <input type="text" id="targetAddressTicketCashier" placeholder="Paste customer address">
+        </div>
+        <div>
+            <button onclick="App.purchaseTicket()">Purchase Tiger Ticket</button>
+        </div>
+        <div>
+            <button onclick="App.redeemTicket()">Redeem Free Ticket</button>
+        </div>
+        <div>
+            <button onclick="App.updateTicketBalance()">Update Customer Balance</button>
+        </div>
+        <div id="custBalanceTicket">Customer Balance (Ticket): <span class="custBalanceTicket"></span></div>
+
+        <h2>Purchase / Redeem Ice Cream Tokens </h2>
+        <div>
+            <label for="targetAddressIceCreamCashier">Customer Address:</label>
+            <input type="text" id="targetAddressIceCreamCashier" placeholder="Paste customer address">
+        </div>
+        <div>
+            <button onclick="App.purchaseIceCream()">Purchase Tiger Ice Cream</button>
+        </div>
+        <div>
+            <button onclick="App.redeemIceCream()">Redeem Free Ice Cream</button>
+        </div>
+        <div>
+            <button onclick="App.updateIceCreamBalance()">Update Customer Balance</button>
+        </div>
+        <div id="custBalanceIceCream">Customer Balance (Ice Cream): <span class="custBalanceIceCream"></span></div>
+
+        <div>
+            <h2>Mint NFT</h2>
+            <div>
+              <label for="nftTargetAddress">Customer Address:</label>
+              <input type="text" id="nftTargetAddress" placeholder="Paste customer address">
+            </div>
+            <div>
+              <label for="nftEvent">Select Event:</label>
+              <select id="nftEvent">
+                <option value="0">Small World Seasonal Drink</option>
+                <option value="1">Garden Theatre Movie Premier</option>
+                <option value="2">Olives Christmas Sandwich Special</option>
+                <option value="3">Bent Spoon Flavour of the Week</option>
+              </select>
+            </div>
+            <div>
+              <label for="nftAmount">Amount to Mint:</label>
+              <input type="number" id="nftAmount" placeholder="Enter NFT amount" step="1">
+            </div>
+            <button onclick="App.mintNFT()">Mint NFT</button>
+          </div>
+
+        <div class="status">
+            <h3>Status</h3>
+            <div id="status"></div>
+          </div>
+
+        </div>
+        </div>
+    <div id="Passport" class="tabcontent">
+        <!-- <div>
+          <label for="passportTargetAddress">Customer Address:</label>
+          <input type="text" id="passportTargetAddress" placeholder="Paste customer address">
+        </div> -->
+        <div>
+          <label for="targetAddressPassport">Customer Address:</label>
+          <input type="text" id="targetAddressPassport" placeholder="Paste customer address">
+        </div>
+        <h2>Coffee Reward Passport</h2>
+        <div class="status" id="coffee-status"></div>
+        <div class="passport" id="coffee-stamps"></div>
+        <button onclick="App.updateCoffeePassport()">Update Coffee Passport</button>
+
+        <h2>Sandwich Reward Passport</h2>
+        <div class="status" id="sandwich-status"></div>
+        <div class="passport" id="sandwich-stamps"></div>
+        <button onclick="App.updateSandwichPassport()">Update Sandwich Passport</button>
+
+        <h2>Ticket Reward Passport</h2>
+        <div class="status" id="ticket-status"></div>
+        <div class="passport" id="ticket-stamps"></div>
+        <button onclick="App.updateTicketPassport()">Update Ticket Passport</button>
+
+        <h2>Ice Cream Reward Passport</h2>
+        <div class="status" id="icecream-status"></div>
+        <div class="passport" id="icecream-stamps"></div>
+        <button onclick="App.updateIceCreamPassport()">Update Ice Cream Passport</button>
+
+        <h2>NFT Collection</h2>
+        <div id="nft-passport" class="passport">
+          <!-- User's NFT collection will be displayed here -->
+        </div>
+        <button onclick="App.updateNFTPassport()">Update NFT Passport</button>
+
+    </div>
+
+  <div id="Swap" class="tabcontent">
+    <h1> Marketplace </h1>
+    <!-- <div>
+      <label for="targetAddressSwap">Customer Address:</label>
+      <input type="text" id="targetAddressSwap" placeholder="Paste customer address">
+    </div> -->
+    <!-- Token Swap Section -->
+    <h2>Swap</h2>
+    <div>
+        <label>Token 1 (Give):</label>
+        <select id="swap1">
+          <option value="0">Small World Coffee</option>
+          <option value="1">Olives Sandwich</option>
+          <option value="2">Garden Theatre Ticket</option>
+          <option value="3">Bent Spoon Ice Cream</option>
+        </select>
+        <label>Token 2 (Receive):</label>
+        <select id="swap2">
+          <option value="0">Small World Coffee</option>
+          <option value="1">Olives Sandwich</option>
+          <option value="2">Garden Theatre Ticket</option>
+          <option value="3">Bent Spoon Ice Cream</option>
+        </select>
+      </div>
+      <div>
+        <label for="swapamt">Amount to Swap:</label>
+        <input type="number" id="swapamt" placeholder="Enter amount to swap" step="any">
+    </div>
+    <button onclick="App.makeSwap()">Conduct Swap</button>
+
+    <div class="balances">
+        <h2>Token Balances</h2>
+        <div id="balanceCoffee">Balance (Coffee): <span class="balanceCoffee"></span></div>
+        <div id="balanceSandwich">Balance (Sandwich): <span class="balanceSandwich"></span></div>
+        <div id="balanceTicket">Balance (Ticket): <span class="balanceTicket"></span></div>
+        <div id="balanceIceCream">Balance (Ice Cream): <span class="balanceIceCream"></span></div>
+        <button onclick="App.refreshBalance()">Update Balance</button>
+
+    </div>
+      <div class="prices">
+        <h2>Token Prices</h2>
+        <div id="priceCoffee">Price (Coffee): <span class="priceCoffee"></span></div>
+        <div id="priceSandwich">Price (Sandwich): <span class="priceSandwich"></span></div>
+        <div id="priceTicket">Price (Ticket): <span class="priceTicket"></span></div>
+        <div id="priceIceCream">Price (Ice Cream): <span class="priceIceCream"></span></div>
+        <button onclick="App.getPrices()">Get Prices</button>
+    </div>
+
+  <div class="status2">
+    <h3>Status</h3>
+    <div id="status2"></div>
+  </div>
+  </div>
+
+  <!-- <div id="Admin" class="tabcontent">
+    <div>
+    <h2>Mint / Burn Tiger Coffee (Admin Only) </h2>
+    <div>
+        <label for="mint0">Mint Amount:</label>
+        <input type="number" id="mint0" placeholder="Enter amount to mint" step="any">
+        <button onclick="App.mintCoffee()">Mint Tiger Coffee</button>
+    </div>
+    <div>
+        <label for="burn0">Burn Amount:</label>
+        <input type="number" id="burn0" placeholder="Enter amount to burn" step="any">
+        <button onclick="App.burnCoffee()">Burn Tiger Coffee</button>
+    </div>
+    <div id="balanceCoffee">Balance (Coffee): <span class="balanceCoffee"></span></div>
+
+    <h2>Mint / Burn Tiger Sandwich (Admin Only) </h2>
+    <div>
+        <label for="mint1">Mint Amount:</label>
+        <input type="number" id="mint1" placeholder="Enter amount to mint" step="any">
+        <button onclick="App.mintSandwich()">Mint Tiger Sandwich</button>
+    </div>
+    <div>
+        <label for="burn1">Burn Amount:</label>
+        <input type="number" id="burn1" placeholder="Enter amount to burn" step="any">
+        <button onclick="App.burnSandwich()">Burn Tiger Sandwich</button>
+    </div>
+    <div id="balanceSandwich">Balance (Sandwich): <span class="balanceSandwich"></span></div>
+
+          <h2>Initialize DEX Liquidity (Admin Only) </h2>
+          <div>
+              <label for="liquidity0">Liquidity Amount (Token0):</label>
+              <input type="number" id="liquidity0" placeholder="Enter amount of Token0" step="any">
+          </div>
+          <div>
+              <label for="liquidity1">Liquidity Amount (Token1):</label>
+              <input type="number" id="liquidity1" placeholder="Enter amount of Token1" step="any">
+          </div>
+          <button onclick="App.init()">Initialize Liquidity</button>
+    
+          <div class="reserve">
+            <h2>Reserves</h2>
+            <div>Reserve (Coffee): <span class="reservesCoffee"></span></div>
+            <div>Reserve (Sandwich): <span class="reservesSandwich"></span></div>
+          </div>
+
+    <div class="statuses">
+        <h3>Status</h3>
+        <div id="status"></div>
+      </div>
+</div>
+</div> -->
+    <!-- Vote Tab -->
+    <div id="Vote" class="tabcontent">
+      <h2>1) Small World Seasonal Drink</h2>
+      <div id="smallworld-vote-options">
+        <button onclick="App.voteSmallWorldDrink(0)">Summer Strawberry Matcha</button>
+        <button onclick="App.voteSmallWorldDrink(1)">Mango Lemonade Refresher</button>
+        <button onclick="App.voteSmallWorldDrink(2)">Arctic Icicle Espresso</button>
+      </div>
+      <div id="smallworld-vote-status" style="margin:8px 0;color:#a00;"></div>
+      <h3>Current Votes:</h3>
+      <ul>
+        <li>Summer Strawberry Matcha: <span id="sw-votes-0">0</span></li>
+        <li>Mango Lemonade Refresher: <span id="sw-votes-1">0</span></li>
+        <li>Arctic Icicle Espresso: <span id="sw-votes-2">0</span></li>
+      </ul>
+
+      <h2>2) Next Retro Movie at Garden Theatre</h2>
+      <div id="garden-vote-options">
+        <button onclick="App.voteGardenMovie(0)">Breakfast at Tiffany's</button>
+        <button onclick="App.voteGardenMovie(1)">Casablanca</button>
+        <button onclick="App.voteGardenMovie(2)">The Goonies</button>
+      </div>
+      <div id="garden-vote-status" style="margin:8px 0;color:#a00;"></div>
+      <h3>Current Votes:</h3>
+      <ul>
+        <li>Breakfast at Tiffany's: <span id="gt-votes-0">0</span></li>
+        <li>Casablanca: <span id="gt-votes-1">0</span></li>
+        <li>The Goonies: <span id="gt-votes-2">0</span></li>
+      </ul>
+    </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  <script>
+    function openPage(evt, pageName) {
+        console.log('Opening page:', pageName); // Debugging log
+
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+
+        // Hide all the tab content
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+
+        // Remove "active" class from all tab links
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the selected tab content
+        var selectedTab = document.getElementById(pageName);
+        if (selectedTab) {
+          selectedTab.style.display = "block";
+          evt.currentTarget.className += " active";
+        } else {
+          console.log('Error: Tab content not found for', pageName);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementsByClassName("tablinks")[0].click();
+      });
+  </script>
+
+  </body>
+</html>
+
+  <!-- <div id="Pool" class="tabcontent">
+      <div class="row">
+          <div class="column">
+              <h3>Reserves:</h3>
+              <p><strong class="reservesBNB">loading...</strong> sBNB</p>
+              <p><strong class="reservesTSLA">loading...</strong> sTSLA</p>
+          </div>
+
+          <div class="column">
+              <h3>Balances:</h3>
+              <p><strong class="balancesBNB">loading...</strong> sBNB</p>
+              <p><strong class="balancesTSLA">loading...</strong> sTSLA</p>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="column">
+              <div class="card">
+                  <h3>Add liquidity:</h3>
+                  <p><label for="liquidity0">sBNB:</label>
+                  <input type="text" id="liquidity0" placeholder="e.g. 1000.00" />
+                  </p>
+                  <p><label for="liquidity1">sTSLA:</label>
+                  <input type="text" id="liquidity1" placeholder="e.g. 1000.00" />
+                  </p>
+                  <button onclick="App.init()">Initialize pool</button>
+                  <button onclick="App.addLiquidity()">Add liquidity</button>
+              </div>
+          </div>
+
+          <div class="column">
+              <div class="card">
+                  <h3>Remove liquidity:</h3>
+                  <p>
+                      Your shares:<a class="shares"> &nbsp;<b>loading......</b>&nbsp; </a> 
+                  </p>
+                  <p><label for="shares">Amount:</label>
+                  <input type="text" id="shares" placeholder="shares to withdraw" />
+                  </p>
+                  <button onclick="App.checkShares()">Check shares</button>
+                  <button onclick="App.removeLiquidity()">Withdraw</button>
+              </div>
+          </div>
+      </div>
+  </div> -->
